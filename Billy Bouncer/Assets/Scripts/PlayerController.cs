@@ -3,23 +3,42 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+	public BBRControls[] gameControls;
 
-	private bool isInZone;
+	private BBRControls controls;
+	private FirstPersonDrifter fpd;
+
+	private bool isLeaving;
 
 	// Use this for initialization
 	void Start ()
 	{
-	
+		fpd = GetComponent<FirstPersonDrifter> ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if (isInZone) {
+		if (controls != null) {
+			// get out of range before entering a new control zone
+			if (isLeaving) {
+				if (controls.IsOutOfRange (transform.position)) {
+					controls = null;
+					isLeaving = false;
+				}
+				return;
+			}
+
+			if (Input.GetButtonDown ("Cancel")) {
+				ExitControlZone ();
+				isLeaving = true;
+				return;
+			}
+
 			int x = (int)Input.GetAxisRaw ("Horizontal");
 			int y = (int)Input.GetAxisRaw ("Vertical");
 
-			Vector3 buttonpos = BBRControls.singleton.GetButtonPos (x, y);
+			Vector3 buttonpos = controls.GetButtonPos (x, y);
 			transform.position = new Vector3 (buttonpos.x, transform.position.y, buttonpos.z);
 
 			int movex = 0;
@@ -36,19 +55,25 @@ public class PlayerController : MonoBehaviour
 				movex = 1;
 			}
 
-			BillyController.singleton.Move (movex, movey);
+			controls.game.TakeInput (movex, movey);
 
 		} else {
-			
-			if (BBRControls.singleton.IsInRange (transform.position)) {
-				EnterControlZone ();
+			foreach (BBRControls machine in gameControls) {
+				if (machine.IsInRange (transform.position)) {
+					EnterControlZone (machine);
+				}
 			}
+
 		}
 	}
 
-	private void EnterControlZone() {
-		isInZone = true;
-		GetComponent<FirstPersonDrifter> ().enabled = false;
+	private void EnterControlZone(BBRControls machine) {
+		controls = machine;
+		fpd.enabled = false;
+	}
+
+	private void ExitControlZone() {
+		fpd.enabled = true;
 	}
 }
 

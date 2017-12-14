@@ -3,13 +3,11 @@ using System.Collections;
 
 public class BBRControls : MonoBehaviour
 {
-	public static BBRControls singleton;
-
+	public BillyGame game;
 	public float zoneRange;
 	public float buttonDist;
 
 	void Awake() {
-		singleton = this;
 	}
 
 	// Use this for initialization
@@ -28,8 +26,12 @@ public class BBRControls : MonoBehaviour
 		return Vec.IsInRangeIgnoreY (pos, transform.position, zoneRange);
 	}
 
+	public bool IsOutOfRange(Vector3 pos) {
+		return !Vec.IsInRangeIgnoreY (pos, transform.position, zoneRange * 1.3f);
+	}
+
 	public Vector3 GetButtonPos(int x, int y) {
-		return transform.position + new Vector3 (buttonDist * x, 0, buttonDist * y);
+		return transform.position + transform.right * buttonDist * x + transform.forward * buttonDist * y;
 	}
 }
 
