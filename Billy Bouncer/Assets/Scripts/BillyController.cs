@@ -24,7 +24,7 @@ public class BillyController : MonoBehaviour {
 	public void Move(int x, int y) {
 		Vector3 dir = new Vector3 (x, y, 0);
 		dir.Normalize ();
-		rigidbod.AddForce (moveForce * Time.deltaTime * rigidbod.mass * dir);
+		rigidbod.AddForce (moveForce * rigidbod.mass * dir / Time.deltaTime);
 	}
 	
 	// Update is called once per frame

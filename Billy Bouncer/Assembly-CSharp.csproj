@@ -164,6 +164,7 @@
      <Compile Include="Assets\Scripts\BBRControls.cs" />
      <Compile Include="Assets\Scripts\BillyController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\ShakeCabinet.cs" />
      <Compile Include="Assets\Scripts\Vec.cs" />
      <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />

@@ -22,7 +22,21 @@ public class PlayerController : MonoBehaviour
 			Vector3 buttonpos = BBRControls.singleton.GetButtonPos (x, y);
 			transform.position = new Vector3 (buttonpos.x, transform.position.y, buttonpos.z);
 
-			BillyController.singleton.Move (x, y);
+			int movex = 0;
+			int movey = 0;
+
+			if (Input.GetButtonDown ("Up")) {
+				movey = 1;
+			} else if (Input.GetButtonDown ("Down")) {
+				movey = -1;
+			}
+			if (Input.GetButtonDown ("Left")) {
+				movex = -1;
+			} else if (Input.GetButtonDown ("Right")) {
+				movex = 1;
+			}
+
+			BillyController.singleton.Move (movex, movey);
 
 		} else {
 			
