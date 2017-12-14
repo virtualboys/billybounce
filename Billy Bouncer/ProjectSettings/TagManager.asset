@@ -18,8 +18,8 @@ TagManager:
   - coin
   - Player
   - billyzone
-  - 
-  - 
+  - DontCollideWithSelf
+  - ddr
   - 
   - 
   - 
