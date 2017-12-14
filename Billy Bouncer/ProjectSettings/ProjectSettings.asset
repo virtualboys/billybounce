@@ -594,13 +594,13 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
-    Collab: 1
+    Collab: 0
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: af54a85c-2c3b-4394-bfe9-487951886908
+  cloudProjectId: 7f3d8c88-a1a2-46d1-8590-976a0f9cb5d4
   projectName: Billy Bouncer
-  organizationId: ty-2997769
+  organizationId: based666
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
