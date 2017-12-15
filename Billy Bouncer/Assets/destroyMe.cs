@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class destroyMe : MonoBehaviour {
-	
+	public AudioSource aSource;
+	public AudioClip coinSound;
+	public GameObject player;
 	// Use this for initialization
 	void Start () {
 		Destroy(gameObject, 5);
+		player = GameObject.FindGameObjectWithTag("Player");
 		//StartCoroutine(DestroyIt(10));
 	}
 	
@@ -14,7 +17,15 @@ public class destroyMe : MonoBehaviour {
 	void Update () {
 		
 	}
-	 //   IEnumerator DestroyIt(int waitTime)
+	void OnTriggerEnter(Collider col)
+	{
+		if(col.gameObject.tag == "coinslot")
+		{
+			player.GetComponent<PlayerController>().startTheGame = true;
+			Debug.Log("triggered");
+			aSource.PlayOneShot(coinSound,1f);
+		}
+	}
    // {
     	// yield return new WaitForSeconds(waitTime);
     	// Destroy(gameObject);

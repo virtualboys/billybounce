@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 	private FirstPersonDrifter fpd;
 
 	private bool isLeaving;
+	public bool startTheGame = false;
 
 	// Use this for initialization
 	void Start ()
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
 				return;
 			}
 
-			if (Input.GetButtonDown ("Cancel")) {
+			if (Input.GetKeyDown (KeyCode.E)) {
 				ExitControlZone ();
 				isLeaving = true;
 				return;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
 		} else {
 			foreach (BBRControls machine in gameControls) {
 				if (machine.IsInRange (transform.position)) {
+					if(startTheGame == true)
 					EnterControlZone (machine);
 				}
 			}
