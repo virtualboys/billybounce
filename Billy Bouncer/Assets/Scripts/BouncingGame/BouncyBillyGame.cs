@@ -7,7 +7,9 @@ public class BouncyBillyGame : BillyGame {
 	public float moveForce;
 	public Rigidbody rigidbod;
 
-	private float startZ;
+	private Vector3 startPos;
+	private Vector3 startRot;
+	private int numReds;
 
 	void Awake() {
 	}
@@ -15,7 +17,6 @@ public class BouncyBillyGame : BillyGame {
 	// Use this for initialization
 	void Start () {
 		rigidbod = GetComponentInChildren<Rigidbody> ();
-		startZ = transform.position.z;
 	}
 
 	public override void TakeInput (int x, int y)
@@ -24,13 +25,30 @@ public class BouncyBillyGame : BillyGame {
 		dir.Normalize ();
 		rigidbod.AddForce (moveForce * rigidbod.mass * dir / Time.deltaTime);
 	}
+
+	public override void StartGame ()
+	{
+		rigidbod.useGravity = true;
+	}
+
+	public override void EndGame ()
+	{
+		rigidbod.useGravity = false;
+	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
-	void LateUpdate() {
-		//transform.position = Vec.SetZ (transform.position, startZ);
+	public void RegisterRedTile() {
+		numReds++;
+	}
+
+	public void RemoveRedTile() {
+		numReds--;
+		if (numReds == 0) {
+			Debug.Log ("You win!");
+		}
 	}
 }

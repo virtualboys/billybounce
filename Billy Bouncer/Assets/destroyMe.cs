@@ -22,7 +22,6 @@ public class destroyMe : MonoBehaviour {
 		if(col.gameObject.tag == "coinslot")
 		{
 			player.GetComponent<PlayerController>().startTheGame = true;
-			Debug.Log("triggered");
 			aSource.PlayOneShot(coinSound,1f);
 		}
 	}

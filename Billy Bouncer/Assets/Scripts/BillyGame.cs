@@ -17,5 +17,7 @@ public abstract class BillyGame : MonoBehaviour
 	}
 
 	public abstract void TakeInput (int x, int y);
+	public abstract void StartGame();
+	public abstract void EndGame();
 }
 

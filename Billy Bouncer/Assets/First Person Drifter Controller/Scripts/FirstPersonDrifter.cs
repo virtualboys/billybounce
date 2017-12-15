@@ -11,6 +11,8 @@ public class FirstPersonDrifter: MonoBehaviour
 	public AudioSource aSource;
 	public AudioClip sfxBounce, sfxCoin;
 
+	public bool disableInput;
+
 	public GameObject coin;
 	public GameObject instCoin;
 	public Transform itemSpawnLoc;
@@ -83,6 +85,11 @@ public class FirstPersonDrifter: MonoBehaviour
     void FixedUpdate() {
         float inputX = Input.GetAxis("Horizontal");
         float inputY = Input.GetAxis("Vertical");
+		if (disableInput) {
+			inputX = 0;
+			inputY = 0;
+		}
+
         // If both horizontal and vertical are used simultaneously, limit speed (if allowed), so the total doesn't exceed normal move speed
         float inputModifyFactor = (inputX != 0.0f && inputY != 0.0f && limitDiagonalSpeed)? .7071f : 1.0f;
  
@@ -162,6 +169,10 @@ public class FirstPersonDrifter: MonoBehaviour
         // Move the controller, and set grounded true or false depending on whether we're standing on something
         grounded = (controller.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
     }
+
+	public void BounceUp(float amt) {
+		moveDirection.y = amt;
+	}
  
     // Store point that we're in contact with for use in FixedUpdate if needed
     void OnControllerColliderHit (ControllerColliderHit hit) {

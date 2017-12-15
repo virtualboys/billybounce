@@ -21,5 +21,15 @@ public class OldBillyGame : BillyGame
 	{
 		billy.localPosition += new Vector3 (x, y, 0);
 	}
+
+	public override void StartGame ()
+	{
+		
+	}
+
+	public override void EndGame ()
+	{
+		
+	}
 }
 

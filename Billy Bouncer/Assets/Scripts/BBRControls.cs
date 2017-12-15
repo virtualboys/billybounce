@@ -6,6 +6,7 @@ public class BBRControls : MonoBehaviour
 	public BillyGame game;
 	public float zoneRange;
 	public float buttonDist;
+	public Transform enterGamePos;
 
 	void Awake() {
 	}
