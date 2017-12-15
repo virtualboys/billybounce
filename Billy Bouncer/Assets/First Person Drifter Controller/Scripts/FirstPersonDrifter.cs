@@ -172,7 +172,6 @@ public class FirstPersonDrifter: MonoBehaviour
             //billyB.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
         		iTween.PunchScale(hit.gameObject, new Vector3(1,1,1),1.5f);
         		hit.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
-            	Debug.Log("Collision");
         	}
         	if(hit.gameObject.tag == "zone_coin")
         	{
