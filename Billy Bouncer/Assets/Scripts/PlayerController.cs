@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
 
 	public BBRControls[] gameControls;
 
+	public GameObject billySong;
+
 	public Rigidbody rigidbod;
 
 	private BBRControls controls;
@@ -116,6 +118,7 @@ public class PlayerController : MonoBehaviour
 			iTween.EaseType.easeInCubic, "delay", .4, "oncomplete", "GoToDDRGame", "oncompletetarget", gameObject));
 		//transform.position = DDRGame.singleton.billyPos.position;
 		fpd.enabled = false;
+		fpd.walkSpeed = 70;
 		//fpd.disableInput = true;
 		headBob.enabled = false;
 
@@ -132,8 +135,10 @@ public class PlayerController : MonoBehaviour
 
 	void GoToDDRGame() {
 		transform.position = DDRGame.singleton.billyPos.position;
+		billySong.transform.SetParent (transform);
+		billySong.transform.localPosition = Vector3.zero;
 		fpd.enabled = true;
-		fpd.gravity = 2.0f;
+		fpd.gravity = 10f;
 	}
 
 	private void EnterControlZone(BBRControls machine) {

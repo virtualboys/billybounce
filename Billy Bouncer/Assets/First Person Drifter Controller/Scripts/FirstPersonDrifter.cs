@@ -83,6 +83,8 @@ public class FirstPersonDrifter: MonoBehaviour
         		}
  	}
     void FixedUpdate() {
+		speed = walkSpeed;
+
         float inputX = Input.GetAxis("Horizontal");
         float inputY = Input.GetAxis("Vertical");
 		if (disableInput) {
@@ -172,6 +174,8 @@ public class FirstPersonDrifter: MonoBehaviour
 
 	public void BounceUp(float amt) {
 		moveDirection.y = amt;
+		aSource.pitch = Random.Range(0.75f,0.9f);
+		aSource.PlayOneShot(sfxBounce,0.05f);
 	}
  
     // Store point that we're in contact with for use in FixedUpdate if needed

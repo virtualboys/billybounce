@@ -19,9 +19,12 @@ public class ShakeCabinet : MonoBehaviour {
 	private static int crackInd = -1;
 	private int numCollisions;
 
+	public AudioSource crackSource;
+	public AudioClip crackClip;
+
 	// Use this for initialization
 	void Start () {
-		baseForce = new Vector3 (dir * cabinet.mass / Time.deltaTime * .008f, 0, 0);
+		baseForce = new Vector3 (dir * cabinet.mass / Time.deltaTime * .0085f, 0, 0);
 	}
 	
 	// Update is called once per frame
@@ -49,6 +52,8 @@ public class ShakeCabinet : MonoBehaviour {
 
 			screenCrackRenderer.enabled = true;
 			screenCutoutRenderer.enabled = true;
+
+			crackSource.PlayOneShot (crackClip);
 
 		}
 

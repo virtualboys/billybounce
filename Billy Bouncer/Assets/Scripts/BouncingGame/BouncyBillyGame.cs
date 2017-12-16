@@ -6,6 +6,8 @@ public class BouncyBillyGame : BillyGame {
 
 	public float moveForce;
 	public Rigidbody rigidbod;
+	public AudioSource billySource;
+	public AudioClip billyClip;
 
 	private Vector3 startPos;
 	private Vector3 startRot;
@@ -24,6 +26,10 @@ public class BouncyBillyGame : BillyGame {
 		Vector3 dir = new Vector3 (x, y, 0);
 		dir.Normalize ();
 		rigidbod.AddForce (moveForce * rigidbod.mass * dir / Time.deltaTime);
+		if (x != 0 || y != 0) {
+			billySource.pitch = Random.Range (0.25f, 0.3f);
+			billySource.PlayOneShot (billyClip, 1f);
+		}
 	}
 
 	public override void StartGame ()

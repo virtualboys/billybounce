@@ -1,14 +1,21 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-[ExecuteInEditMode]
 public class DDRTile : MonoBehaviour
 {
-	public float speed;
 	public float maxY;
+	public Renderer rend;
+	public Color greenColor;
+
+	private bool isGreen;
+
+	const float disableTime = .3f;
+	float timer;
 
 	void Start() {
-
+		if (Random.value > .8f) {
+			isGreen = true;
+			rend.material.color = greenColor;
+		}
 	}
 
 	void Update() {
@@ -16,19 +23,32 @@ public class DDRTile : MonoBehaviour
 		if (t == 0) {
 			t = 1 / 60.0f;
 		}
-		transform.position += Vector3.up * speed * t;
+		if (timer > 0) {
+			timer -= t;
+		}
+
+		transform.position += Vector3.up * DDRGame.singleton.speed * t;
 		if (transform.localPosition.y > maxY) {
 			GameObject.DestroyImmediate (gameObject);
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
-		Destroy(gameObject);
+		if (timer > 0) {
+			return;
+		}
 
-		PlayerController.singleton.rigidbod.AddForce (Vector3.up * 300);
+		if (!isGreen) {
+			DDRGame.singleton.HitRed ();
+			rend.material.color = greenColor;
+			isGreen = true;
+			timer = disableTime;
+		} else {
+			DDRGame.singleton.HitGreen ();
+		}
 	}
 
-	void OnCollisionEnter(Collision collision)
+	/*void OnCollisionEnter(Collision collision)
 	{
 		//DestroyImmediate(gameObject);
 		Debug.Log ("Bounce");
@@ -36,6 +56,6 @@ public class DDRTile : MonoBehaviour
 		PlayerController.singleton.fpd.BounceUp (100);
 	
 
-	}
+	}*/
 }
 

@@ -22,11 +22,13 @@ public class LockMouse : MonoBehaviour
         if  ( Input.GetKeyDown(KeyCode.Escape) )
         {
         	LockCursor(!Screen.lockCursor);
+
         }
     }
     
     public void LockCursor(bool lockCursor)
     {
     	Screen.lockCursor = lockCursor;
+		Cursor.visible = !lockCursor;
     }
 }
