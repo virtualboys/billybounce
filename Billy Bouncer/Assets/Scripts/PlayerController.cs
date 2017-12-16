@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 		fpd = GetComponent<FirstPersonDrifter> ();
 		headBob = GetComponentInChildren<HeadBob> ();
 
-		//EnterGame ();
+		EnterGame ();
 	}
 	
 	// Update is called once per frame
@@ -92,9 +92,9 @@ public class PlayerController : MonoBehaviour
 			posY = y;
 
 			Vector3 pos = Vec.SetY (DDRGame.singleton.billyPos.position + DDRGame.singleton.spread * new Vector3 (x, 0, y), transform.position.y);
-
-			//iTween.MoveTo (gameObject, iTween.Hash ("position", pos, "time", .02f, "easeType", 
-			//	iTween.EaseType.easeInOutCubic));
+			//transform.position = pos;
+			iTween.MoveTo (gameObject, iTween.Hash ("position", pos, "time", .02f, "easeType", 
+				iTween.EaseType.easeInOutCubic));
 		}
 	}
 
@@ -114,9 +114,6 @@ public class PlayerController : MonoBehaviour
 	}
 
 	public void EnterGame() {
-		iTween.MoveTo (gameObject, iTween.Hash ("position", controls.enterGamePos, "time", 5.2f, "easeType", 
-			iTween.EaseType.easeInCubic, "delay", .4, "oncomplete", "GoToDDRGame", "oncompletetarget", gameObject));
-		//transform.position = DDRGame.singleton.billyPos.position;
 		fpd.enabled = false;
 		fpd.walkSpeed = 70;
 		//fpd.disableInput = true;
@@ -126,10 +123,16 @@ public class PlayerController : MonoBehaviour
 		//rigidbod.useGravity = true;
 
 		//ExitControlZone ();
+		isInGame = true;
+
 		if (controls != null) {
 			controls.game.EndGame ();
+			iTween.MoveTo (gameObject, iTween.Hash ("position", controls.enterGamePos, "time", 5.2f, "easeType", 
+				iTween.EaseType.easeInCubic, "delay", .4, "oncomplete", "GoToDDRGame", "oncompletetarget", gameObject));
+		} else {
+			GoToDDRGame ();
 		}
-		isInGame = true;
+
 
 	}
 
@@ -137,8 +140,9 @@ public class PlayerController : MonoBehaviour
 		transform.position = DDRGame.singleton.billyPos.position;
 		billySong.transform.SetParent (transform);
 		billySong.transform.localPosition = Vector3.zero;
-		fpd.enabled = true;
-		fpd.gravity = 10f;
+		fpd.disableInput = true;
+		//fpd.enabled = true;
+		fpd.gravity = 0f;
 	}
 
 	private void EnterControlZone(BBRControls machine) {

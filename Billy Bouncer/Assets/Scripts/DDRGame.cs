@@ -62,7 +62,7 @@ public class DDRGame : MonoBehaviour {
 	}
 
 	public void HitRed() {
-		PlayerController.singleton.fpd.BounceUp (50);
+		//PlayerController.singleton.fpd.BounceUp (50);
 		streak++;
 		bpm += 10;
 		speed += bpm / 60.0f;
