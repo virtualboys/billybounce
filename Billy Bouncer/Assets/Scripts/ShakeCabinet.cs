@@ -16,7 +16,7 @@ public class ShakeCabinet : MonoBehaviour {
 
 	private Vector3 baseForce;
 
-	private int crackInd = -1;
+	private static int crackInd = -1;
 	private int numCollisions;
 
 	// Use this for initialization
