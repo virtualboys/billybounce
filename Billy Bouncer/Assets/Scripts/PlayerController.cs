@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
 	public static PlayerController singleton;
 
-	public BBRControls[] gameControls;
+	public List<BBRControls> gameControls;
 
 	public GameObject billySong;
 
@@ -24,6 +25,8 @@ public class PlayerController : MonoBehaviour
 
 	void Awake() {
 		singleton = this;
+
+		gameControls = new List<BBRControls> ();
 	}
 
 	// Use this for initialization
@@ -32,7 +35,7 @@ public class PlayerController : MonoBehaviour
 		fpd = GetComponent<FirstPersonDrifter> ();
 		headBob = GetComponentInChildren<HeadBob> ();
 
-		EnterGame ();
+		//EnterGame ();
 	}
 	
 	// Update is called once per frame

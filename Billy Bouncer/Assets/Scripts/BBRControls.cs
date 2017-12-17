@@ -14,7 +14,7 @@ public class BBRControls : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	
+		PlayerController.singleton.gameControls.Add (this);
 	}
 	
 	// Update is called once per frame

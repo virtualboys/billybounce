@@ -38,7 +38,7 @@ public class ShakeCabinet : MonoBehaviour {
 		cabinet.AddForceAtPosition (force, forcePos.position);
 
 		numCollisions++;
-		if (numCollisions > 10) {
+		if (numCollisions > 100) {
 			numCollisions = 0;
 			crackInd++;
 			if (crackInd == cracks.Length - 1) {
