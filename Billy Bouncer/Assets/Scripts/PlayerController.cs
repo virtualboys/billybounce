@@ -94,10 +94,10 @@ public class PlayerController : MonoBehaviour
 			posX = x;
 			posY = y;
 
-			Vector3 pos = Vec.SetY (DDRGame.singleton.billyPos.position + DDRGame.singleton.spread * new Vector3 (x, 0, y), transform.position.y);
+			//Vector3 pos = Vec.SetY (DDRGame.singleton.billyPos.position + DDRGame.singleton.spread * new Vector3 (x, 0, y), transform.position.y);
 			//transform.position = pos;
-			iTween.MoveTo (gameObject, iTween.Hash ("position", pos, "time", .02f, "easeType", 
-				iTween.EaseType.easeInOutCubic));
+			//iTween.MoveTo (gameObject, iTween.Hash ("position", pos, "time", .02f, "easeType", 
+			//	iTween.EaseType.easeInOutCubic));
 		}
 	}
 
