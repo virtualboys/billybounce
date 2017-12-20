@@ -62,6 +62,11 @@ public class PlayerController : MonoBehaviour
 				return;
 			}
 
+			if (Input.GetKeyDown (KeyCode.R)) {
+				controls.game.EndGame ();
+				controls.game.StartGame ();
+			}
+
 			int x = (int)Input.GetAxisRaw ("Horizontal");
 			int y = (int)Input.GetAxisRaw ("Vertical");
 
@@ -106,13 +111,15 @@ public class PlayerController : MonoBehaviour
 		y = 0;
 		if (Input.GetButtonDown ("Up")) {
 			y = 1;
-		} else if (Input.GetButtonDown ("Down")) {
-			y = -1;
+		}
+		if (Input.GetButtonDown ("Down")) {
+			y = (y == 0) ? -1 : 2;
 		}
 		if (Input.GetButtonDown ("Left")) {
 			x = -1;
-		} else if (Input.GetButtonDown ("Right")) {
-			x = 1;
+		} 
+		if (Input.GetButtonDown ("Right")) {
+			x = (x == 0) ? 1 : 2;
 		}
 	}
 

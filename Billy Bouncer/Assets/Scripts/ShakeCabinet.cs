@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ShakeCabinet : MonoBehaviour {
 
+	public static float billyForce;
+
+
 	public Renderer screenCrackRenderer;
 	public Renderer screenCutoutRenderer;
 
@@ -24,7 +27,7 @@ public class ShakeCabinet : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		baseForce = new Vector3 (dir * cabinet.mass / Time.deltaTime * .0085f, 0, 0);
+		baseForce = forcePos.forward *  cabinet.mass / Time.deltaTime * .0195f;
 	}
 	
 	// Update is called once per frame
@@ -32,13 +35,17 @@ public class ShakeCabinet : MonoBehaviour {
 		
 	}
 
+	public static void UpdateForce(float billyPercent) {
+		billyForce = .05f + billyPercent * 2;
+	}
+
 	void OnCollisionEnter(Collision collision)
 	{
-		Vector3 force = Vector3.Dot (baseForce, collision.relativeVelocity) * new Vector3 (dir, 0, 0);
+		Vector3 force = Vector3.Dot (billyForce * baseForce, collision.relativeVelocity) * new Vector3 (dir, 0, 0);
 		cabinet.AddForceAtPosition (force, forcePos.position);
 
 		numCollisions++;
-		if (numCollisions > 10) {
+		if (numCollisions > 1000000) {
 			numCollisions = 0;
 			crackInd++;
 			if (crackInd == cracks.Length - 1) {

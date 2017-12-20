@@ -10,8 +10,9 @@ public class GuitarHeroController : BillyGame
 
 	public BillyGame otherBillyGame;
 
-	public int numRows;
-	public float bpm;
+	public float rowHeight;
+	public float startingbpm;
+	public float startDelay;
 
 	public float noteSpread;
 
@@ -20,22 +21,35 @@ public class GuitarHeroController : BillyGame
 	public GameObject rowPrefab;
 	public Transform rowParent;
 
+	public AudioSource musicSource;
+	public AudioSource sfxSource;
+
+	public AudioClip beatSFX;
+
 	public Transform top;
 	public Transform bottom;
 	public Transform hitzone;
+
+	public Transform billyMeter;
+	public int maxBillyScore;
+
+	public Color glowColor;
+	public Color regColor;
 
 	private Queue<RowController> rows;
 
 	public float speed { get; private set; }
 
-	private float length;
 	private float timeToSpawn;
-
 	private float spawnTimer;
+	private float startDelayTimer;
+	public float bpm;
+
+	private int billyScore;
 
 	private bool isRunning;
 
-	private int[] arrowInds = { 1, 2, 3, 4 };
+	private int[] arrowInds = { 0, 1, 2, 3 };
 
 	void Awake() {
 		singleton = this;
@@ -44,20 +58,34 @@ public class GuitarHeroController : BillyGame
 	// Use this for initialization
 	void Start ()
 	{
-		length = top.localPosition.y - bottom.localPosition.y;
 		rows = new Queue<RowController> ();
-		RecomputeVars ();
+
+		//StartGame ();
 	}
 
 	public override void StartGame ()
 	{
 		isRunning = true;
+		billyScore = 0;
+		UpdateBillyMeter ();
+		bpm = startingbpm;
+		RecomputeVars ();
+		musicSource.Stop ();
+		musicSource.Play ();
+		startDelayTimer = startDelay;
+		SpawnRow ();
+
 		otherBillyGame.StartGame ();
 	}
 
 	public override void EndGame ()
 	{
 		isRunning = false;
+
+		while (rows.Count > 0) {
+			GameObject.Destroy (rows.Dequeue ().gameObject);
+		}
+
 		otherBillyGame.EndGame ();
 	}
 	
@@ -68,6 +96,25 @@ public class GuitarHeroController : BillyGame
 			return;
 		}
 
+		if (startDelayTimer > 0) {
+			startDelayTimer -= Time.deltaTime;
+			if (startDelay > 0) {
+				return;
+			}
+		}
+
+		RecomputeVars ();
+			
+		bool isInRange = rows.Peek ().IsInRange ();
+		for (int i = 0; i < arrowInputs.Length; i++) {
+			if (isInRange && rows.Peek().HasArrow(i)) {
+				GlowInputArrow (i);
+			} else {
+				UnGlowInputArrow (i);
+			}
+		}
+
+
 		spawnTimer += Time.deltaTime;
 		if (spawnTimer > timeToSpawn) {
 			SpawnRow ();
@@ -77,15 +124,17 @@ public class GuitarHeroController : BillyGame
 
 	public override void TakeInput (int x, int y)
 	{
-		if (x == -1) {
+		if (x == -1 || x == 2) {
 			TakeSingleInput (0);
-		} else if (x == 1) {
+		}
+		if (x == 1 || x == 2) {
 			TakeSingleInput (3);
 		}
 
-		if (y == -1) {
+		if (y == -1 || y == 2) {
 			TakeSingleInput (1);
-		} else if (y == 1) {
+		}
+		if (y == 1 || y == 2) {
 			TakeSingleInput (2);
 		}
 
@@ -110,15 +159,47 @@ public class GuitarHeroController : BillyGame
 	}
 
 	void Hit() {
+		if (billyScore >= maxBillyScore) {
+			Debug.Log ("U WIN");
+			//u win
+			return;
+		}
+
+		billyScore++;
+		UpdateBillyMeter ();
 
 	}
 
-	void Miss() {
+	public void Miss() {
+		billyScore -= 5;
+		if (billyScore < 0) {
+			billyScore = 0;
+		}
+		UpdateBillyMeter ();
+	}
 
+	void UpdateBillyMeter() {
+		float billyPercent = ((float)billyScore) / maxBillyScore;
+		billyMeter.localScale = Vec.SetX (billyMeter.localScale, 10.7f * billyPercent);
+		ShakeCabinet.UpdateForce (billyPercent);
+	}
+
+	void SetBPM(float newbpm) {
+		bpm = newbpm;
+
+	}
+
+	public void GlowInputArrow(int ind) {
+		
+		arrowInputs [ind].GetComponent<SpriteRenderer> ().color = glowColor;
+	}
+
+	public void UnGlowInputArrow(int ind) {
+		arrowInputs [ind].GetComponent<SpriteRenderer> ().color = regColor;
 	}
 
 	void SpawnRow() {
-		int numArrows = Random.Range (0, 2);
+		int numArrows = Random.Range (1, 2);
 
 		if (numArrows == 0) {
 			return;
@@ -135,7 +216,13 @@ public class GuitarHeroController : BillyGame
 			newRow.AddArrow (newArrow);
 
 		} else {
-			//List<int> inds = new List<int> (arrowInds);
+			List<int> inds = new List<int> (arrowInds);
+			for (int i = 0; i < numArrows; i++) {
+				int ind = Random.Range (0, inds.Count);
+				Arrow newArrow = SpawnArrow (inds[ind], newRow.transform);
+				newRow.AddArrow (newArrow);
+				inds.RemoveAt (ind);
+			}
 		}
 	}
 
@@ -166,13 +253,16 @@ public class GuitarHeroController : BillyGame
 
 	void RecomputeVars() {
 		timeToSpawn = 60.0f / bpm;
-		speed = (length / numRows) / timeToSpawn;
+		speed = rowHeight / timeToSpawn;
 	}
 
-	public void DestroyRow() {
+	public void PopRow() {
 		RowController rc = rows.Dequeue ();
-		GameObject.Destroy (rc.gameObject);
 	}
 
+	// for testing
+	public void PlayBPMCounter() {
+		sfxSource.PlayOneShot (beatSFX);
+	}
 }
 
