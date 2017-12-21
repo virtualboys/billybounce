@@ -212,7 +212,7 @@ public class GuitarHeroController : BillyGame
 	}
 
 	void SpawnRow() {
-		int numArrows = Random.Range (1, 2);
+		int numArrows = Random.Range (1, 3);
 
 		if (numArrows == 0) {
 			return;

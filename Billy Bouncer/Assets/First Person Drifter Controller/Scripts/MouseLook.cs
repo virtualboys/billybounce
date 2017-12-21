@@ -16,6 +16,8 @@ public class MouseLook : MonoBehaviour
 	public enum RotationAxes { MouseX = 1, MouseY = 2 }
 	public RotationAxes axes = RotationAxes.MouseX;
 	public bool invertY = false;
+
+	public bool isDisabled;
 	
 	public float sensitivityX = 10F;
 	public float sensitivityY = 9F;
@@ -26,8 +28,8 @@ public class MouseLook : MonoBehaviour
 	public float minimumY = -85F;
 	public float maximumY = 85F;
  
-	float rotationX = 0F;
-	float rotationY = 0F;
+	public float rotationX = 0F;
+	public float rotationY = 0F;
  
 	private List<float> rotArrayX = new List<float>();
 	float rotAverageX = 0F;	
@@ -54,8 +56,10 @@ public class MouseLook : MonoBehaviour
 		if (axes == RotationAxes.MouseX)
 		{			
 			rotAverageX = 0f;
- 
-			rotationX += Input.GetAxis("Mouse X") * sensitivityX * Time.timeScale;
+ 	
+			if (!isDisabled) {
+				rotationX += Input.GetAxis ("Mouse X") * sensitivityX * Time.timeScale;
+			}
  
 			rotArrayX.Add(rotationX);
  
@@ -82,7 +86,10 @@ public class MouseLook : MonoBehaviour
  			{
  				invertFlag = -1f;
  			}
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY * invertFlag * Time.timeScale;
+
+			if (!isDisabled) {
+				rotationY += Input.GetAxis ("Mouse Y") * sensitivityY * invertFlag * Time.timeScale;
+			}
 			
 			rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
  	
@@ -100,6 +107,21 @@ public class MouseLook : MonoBehaviour
  
 			Quaternion yQuaternion = Quaternion.AngleAxis (rotAverageY, Vector3.left);
 			transform.localRotation = originalRotation * yQuaternion;
+		}
+	}
+
+	public void ClearSmoothArrays() {
+		rotArrayX.Clear ();
+		rotArrayY.Clear ();
+		rotationX = transform.localRotation.eulerAngles.y;
+	}
+
+	public void SetRot(float rot) {
+		ClearSmoothArrays ();
+		if (RotationAxes.MouseX == axes) {
+			rotationX = rot;
+		} else {
+			rotationY = rot;
 		}
 	}
 	

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShakeCabinet : MonoBehaviour {
 
+	public static ShakeCabinet ashake;
+
 	public static float billyForce;
 
 
@@ -24,6 +26,10 @@ public class ShakeCabinet : MonoBehaviour {
 
 	public AudioSource crackSource;
 	public AudioClip crackClip;
+
+	void Awake() {
+		ashake = this;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -64,5 +70,16 @@ public class ShakeCabinet : MonoBehaviour {
 
 		}
 
+	}
+
+	public void CrackScreen() {
+		crackInd = 1;
+		screenCrackRenderer.material.mainTexture = cracks [crackInd];
+		screenCutoutRenderer.material.mainTexture = cutouts [crackInd];
+
+		screenCrackRenderer.enabled = true;
+		screenCutoutRenderer.enabled = true;
+
+		crackSource.PlayOneShot (crackClip);
 	}
 }

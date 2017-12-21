@@ -27,9 +27,9 @@ public class DDRTile : MonoBehaviour
 			timer -= t;
 		}
 
-		transform.position += Vector3.up * DDRGame.singleton.speed * t;
-		if (transform.localPosition.y > maxY) {
-			GameObject.DestroyImmediate (gameObject);
+		transform.position += -Vector3.forward * DDRGame.singleton.speed * t;
+		if (transform.localPosition.z < -100) {
+			GameObject.Destroy (gameObject);
 		}
 	}
 
