@@ -39,14 +39,14 @@ public class BouncyBillyGame : BillyGame {
 				Vector3 desired = rigidbod.transform.position;
 				Vector3 d = desired - rigidbod.transform.position;
 				freezePos = desired;
-				rigidbod.useGravity = false;
+				rigidbod.isKinematic = true;
 				leg1.velocity = Vector3.zero;
 				leg2.velocity = Vector3.zero;
 				leg1.transform.position += d;
 				leg2.transform.position += d;
 			}
 
-			rigidbod.AddTorque (new Vector3 (0, 10, 0));
+			rigidbod.angularVelocity += (new Vector3 (0, 10, 0));
 
 			niceHitTimer = c_timeToNiceHit;
 
@@ -90,7 +90,7 @@ public class BouncyBillyGame : BillyGame {
 	}
 
 	public void ReleaseNiceHit() {
-		rigidbod.useGravity = true;
+		rigidbod.isKinematic = false;
 		Vector2 dir = Random.insideUnitCircle.normalized;
 		rigidbod.AddForce(niceHitForce * new Vector3(dir.x, dir.y, 0));
 		niceHitForce = 0;
