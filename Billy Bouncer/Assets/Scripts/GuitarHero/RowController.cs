@@ -75,7 +75,7 @@ public class RowController : MonoBehaviour
 					float p = GetP ();
 					int niceInd = (int)(p * 4);
 
-					if (p > .9f) {
+					if (p > .94f) {
 						BouncyBillyGame.niceHit = true;
 					}
 

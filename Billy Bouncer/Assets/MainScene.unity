@@ -47202,7 +47202,7 @@ MonoBehaviour:
   bottom: {fileID: 1536917657}
   hitzone: {fileID: 26672925}
   billyMeter: {fileID: 1857438082}
-  maxBillyScore: 10
+  maxBillyScore: 100
   glowColor: {r: 1, g: 1, b: 1, a: 0.691}
   regColor: {r: 1, g: 1, b: 1, a: 0.422}
   bpm: 0
