@@ -17,5 +17,16 @@ public class Arrow : MonoBehaviour
 	{
 	
 	}
+
+	public void HitArrow() {
+		transform.SetParent (null);
+		iTween.PunchScale (gameObject, iTween.Hash ("amount", 1.5f * Vector3.one, "time", 
+			.1f, "oncomplete", "OnScaleComplete", "oncompletetarget", gameObject));
+		iTween.FadeTo (gameObject, 0, .1f);
+	}
+
+	void OnScaleComplete() {
+		GameObject.Destroy (gameObject);
+	}
 }
 

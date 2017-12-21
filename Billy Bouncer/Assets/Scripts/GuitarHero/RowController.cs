@@ -6,6 +6,8 @@ public class RowController : MonoBehaviour
 {
 	public float hitRange;
 
+	public GameObject[] labels;
+
 	private List<Arrow> arrows;
 	private int originalCount;
 
@@ -67,12 +69,17 @@ public class RowController : MonoBehaviour
 				
 				Arrow a = arrows [i];
 				arrows.RemoveAt (i);
-				GameObject.Destroy (a);
+				a.HitArrow ();
 
 				if (arrows.Count == 0) {
-					float d = Mathf.Abs (transform.position.y - GuitarHeroController.singleton.hitzone.position.y);
-					float p = 1 - d / hitRange;
-					p *= originalCount;
+					float p = GetP ();
+					int niceInd = (int)(p * 4);
+
+					if (p > .1f) {
+						BouncyBillyGame.niceHit = true;
+					}
+
+					p *= 2;
 					BouncyBillyGame.forceMult = p + .3f;
 
 					GuitarHeroController.singleton.PopRow ();
@@ -84,6 +91,15 @@ public class RowController : MonoBehaviour
 		}
 
 		return false;
+	}
+
+	public float GetP() {
+		float d = Mathf.Abs (transform.position.y - GuitarHeroController.singleton.hitzone.position.y);
+		return 1 - d / hitRange;
+	}
+
+	void ShowNiceLabel(int ind) {
+
 	}
 
 	public int NumArrows() {

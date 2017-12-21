@@ -38,12 +38,19 @@ public class PlayerController : MonoBehaviour
 		fpd = GetComponent<FirstPersonDrifter> ();
 		headBob = GetComponentInChildren<HeadBob> ();
 
+
+
 		//EnterGame ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		if (controls == null) {
+			controls = gameControls [0];
+			controls.game.StartGame ();
+		}
+
 		if (isInGame) {
 			UpdateGame ();
 			return;
@@ -167,6 +174,7 @@ public class PlayerController : MonoBehaviour
 	}
 
 	private void EnterControlZone(BBRControls machine) {
+		transform.SetParent (machine.transform);
 		controls = machine;
 		fpd.enabled = false;
 		headBob.enabled = false;

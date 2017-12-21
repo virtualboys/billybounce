@@ -8,7 +8,7 @@ public class GuitarHeroController : BillyGame
 
 	public static GuitarHeroController singleton;
 
-	public BillyGame otherBillyGame;
+	public BouncyBillyGame otherBillyGame;
 
 	public float rowHeight;
 	public float startingbpm;
@@ -50,6 +50,8 @@ public class GuitarHeroController : BillyGame
 	private bool isRunning;
 
 	private int[] arrowInds = { 0, 1, 2, 3 };
+
+	bool hit;
 
 	void Awake() {
 		singleton = this;
@@ -124,6 +126,11 @@ public class GuitarHeroController : BillyGame
 
 	public override void TakeInput (int x, int y)
 	{
+		if (x == 0 && y == 0) {
+			return;
+		}
+
+		hit = true;
 		if (x == -1 || x == 2) {
 			TakeSingleInput (0);
 		}
@@ -138,7 +145,11 @@ public class GuitarHeroController : BillyGame
 			TakeSingleInput (2);
 		}
 
-		otherBillyGame.TakeInput (x, y);
+		if (hit) {
+			otherBillyGame.TakeInput (x, y);
+		}
+
+		//otherBillyGame.TakeInput (x, y);
 	}
 
 	void TakeSingleInput(int ind) {
@@ -159,8 +170,8 @@ public class GuitarHeroController : BillyGame
 	}
 
 	void Hit() {
+		hit = hit && true;
 		if (billyScore >= maxBillyScore) {
-			Debug.Log ("U WIN");
 			//u win
 			return;
 		}
@@ -171,10 +182,12 @@ public class GuitarHeroController : BillyGame
 	}
 
 	public void Miss() {
+		hit = false;
 		billyScore -= 5;
 		if (billyScore < 0) {
 			billyScore = 0;
 		}
+		otherBillyGame.ReleaseNiceHit ();
 		UpdateBillyMeter ();
 	}
 
