@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
 
 	public Rigidbody rigidbod;
 
+	
+	public AudioClip paranoia;
+
 	private BBRControls controls;
 	public FirstPersonDrifter fpd;
 	private HeadBob headBob;
@@ -129,6 +132,7 @@ public class PlayerController : MonoBehaviour
 		//fpd.disableInput = true;
 		headBob.enabled = false;
 
+
 		//rigidbod.isKinematic = false;
 		//rigidbod.useGravity = true;
 
@@ -148,11 +152,18 @@ public class PlayerController : MonoBehaviour
 
 	void GoToDDRGame() {
 		transform.position = DDRGame.singleton.billyPos.position;
+		billySong.GetComponent<AudioSource>().clip = paranoia;
 		billySong.transform.SetParent (transform);
 		billySong.transform.localPosition = Vector3.zero;
-		fpd.disableInput = true;
+		//fpd.disableInput = true;
 		//fpd.enabled = true;
-		fpd.gravity = 0f;
+		//billySong.SetActive(true);
+		//billySong.GetComponent<AudioSource>().clip = paranoia;
+		//aSource.clip = paranoia;
+		fpd.walkSpeed = 40;
+		fpd.jumpSpeed = 40;
+		ExitControlZone();
+		fpd.gravity = 35f;
 	}
 
 	private void EnterControlZone(BBRControls machine) {

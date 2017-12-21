@@ -14,6 +14,7 @@ public class DDRGame : MonoBehaviour {
 	public float speed;
 
 	public AudioClip gruntClip;
+	public AudioClip paranoia;
 	public AudioSource playerSource;
 	public AudioSource music;
 
@@ -28,7 +29,7 @@ public class DDRGame : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		StartGame ();
+		//StartGame ();
 	}
 	
 	// Update is called once per frame
@@ -57,7 +58,7 @@ public class DDRGame : MonoBehaviour {
 	}
 
 	public void HitGreen() {
-		playerSource.PlayOneShot (gruntClip);
+		//playerSource.PlayOneShot (gruntClip);
 		streak = 0;
 	}
 

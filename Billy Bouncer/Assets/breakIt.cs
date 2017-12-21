@@ -23,7 +23,7 @@ public class breakIt : MonoBehaviour {
 			bottom.transform.parent = null;
 			bottom.AddComponent<BoxCollider>();
 			bottom.AddComponent<Rigidbody>();
-			aSource.PlayOneShot(sfxBreak[rando],1f);
+			aSource.PlayOneShot(sfxBreak[rando],0.5f);
 		}
 	}
 }
